@@ -1,0 +1,12 @@
+{
+    "secure_server_port"           :443,
+    "insecure_server_port"         :80,
+
+    "mongo_url_path"        :"../bin/mongopath.txt",
+
+    "key_path"              :"../bin/key.pem",
+    "cert_path"             :"../bin/cert.pem",
+
+    "log_folder"                :"./bin/",
+    "log_folder_lifetime_days"  : "3"
+}
