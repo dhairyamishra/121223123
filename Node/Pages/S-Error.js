@@ -1,8 +1,7 @@
 //**************************************************** IMPORTS **************************************************
 
 //Requires Express Node.js framework
-const express = require('express')
-var log = require('../Utils/Log').clog;
+const express = require('express');
 
 //***************************************************** SETUP ***************************************************
 
@@ -25,10 +24,7 @@ router.get('/', function(req,res,next) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
     //Get the starting form of the webpage
-    getPage(function(err,HTML) {
-        if (err) return next(err);
-
-        log.silly('landing');
+    getPage(function(HTML) {
         //Send the HTML to the client
         res.write(HTML);
         //End our response to the client
@@ -40,7 +36,7 @@ router.get('/', function(req,res,next) {
 
 // function to return the html for the page
 function getPage(callback) {
-    callback(undefined,Template());
+    callback(Template());
 }
 
 // function that is specific to each page
@@ -50,13 +46,13 @@ function Template() {
             <a class="navbar-brand">Library</a>
         </nav>
         <div class="mt-2">
-            <h3 class="text-center">Welcome to the library system!</h5>
+            <h3 class="text-center">Welcome to the Library!</h3>
         </div>
         <br>
         <div class="">
-            <h4 class="text-center"> This is a placeholder</h4>
+            <h4 class="text-center"> Appologies, we are experiencing issues.</h4>
             <br>
-            <h4 class="text-center">Browse for a book</h4>
+            <h4 class="text-center">Please try again later</h4>
         </div>  
     `;
     return addHead(body);

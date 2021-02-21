@@ -15,7 +15,7 @@ exports.init = function(connectionUrl,callback) {
         
         
         // the database in the cluster is ordos
-        dbo = db.db("ordos");
+        dbo = db.db("library");
         
         // return
         callback(undefined,'done');

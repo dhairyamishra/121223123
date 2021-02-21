@@ -41,9 +41,27 @@ app.use(function(req,res,next) {
 
 // import pages
 var Landing = require('./Pages/S-Landing');
+var Login = require('./Pages/S-Login');
+var Manager = require('./Pages/S-LibraryManager');
+var CreateBook = require('./Pages/S-CreateBook');
+var CreateUser = require('./Pages/S-CreateUser');
+var UserManagement = require('./Pages/S-UserManagement');
+var BookManagement = require('./Pages/S-BookManagement');
+
+var NotFound = require('./Pages/S-NotFound');
+var PageError = require('./Pages/S-Error');
 
 
 app.use('/landing', Landing);
+app.use('/login', Login);
+app.use('/manager', Manager);
+app.use('/createbook', CreateBook);
+app.use('/createuser', CreateUser);
+app.use('/usermanagement', UserManagement);
+app.use('/bookmanagement', BookManagement);
+
+app.use('/404', NotFound);
+app.use('/error', PageError);
 
 // redirect from base page to /landing page
 app.get('/', function(req,res) {

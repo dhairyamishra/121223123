@@ -7,6 +7,11 @@ const sodium = require('libsodium-wrappers');
 //Require the database module
 const mon = require('./GeneralMongo');
 
+
+// requires converting string ids to objectids
+const {ObjectId} = require('mongodb');
+
+
 // hashes passwords
 function hash(password,callback) {
     var hashed = sodium.crypto_pwhash_str(password,
@@ -55,32 +60,63 @@ usernameTaken = function(username,callback) {
 
 //Returns (success)
 // function to add a user with an authorization level
-exports.addAuthForLevel = function(level,username,password,email,callback) {
-    usernameTaken(username, function(err,taken) {
-        if (err) return callback(err,undefined);
+exports.addAuthForLevel = function(username,level,password,name,ucard,address,phone,email,callback) {
+    if (level==1) {
+        var collection='authentication';
+        var data= {
+            username:'',
+            level:level,
+            hash:'',
+            info: {
+                name:name,
+                ucard:ucard,
+                address: address,
+                phone: phone,
+                email: email
+            }
+        };
 
-        if (taken) {
-            return callback(undefined, 'fail')
-        }
-
-        hash(password, function(err,hashed) {
+        //Add the new user to the database
+        mon.insert(collection, data, function(err2,done) {
+            if (err2) return callback(err2,undefined);
+            return callback(undefined,'success');
+        });
+    }
+    else {
+        usernameTaken(username, function(err,taken) {
             if (err) return callback(err,undefined);
     
-            var collection = 'authentication';
-            var data = {
-                level:level,
-                username:username,
-                email:email,
-                hash:hashed
-            };
+            if (taken) {
+                return callback(undefined, 'fail')
+            }
     
-            //Add the new user to the database
-            mon.insert(collection, data, function(err2,done) {
-                if (err2) return callback(err2,undefined);
-                callback(undefined,'success');
+            hash(password, function(err,hashed) {
+                if (err) return callback(err,undefined);
+        
+                var collection = 'authentication';
+                var data = {
+                    username:username,
+                    level:level,
+                    hash:hashed,
+                    info: {
+                        name:name,
+                        ucard:ucard,
+                        address: address,
+                        phone: phone,
+                        email: email
+                    }
+                };
+        
+                //Add the new user to the database
+                mon.insert(collection, data, function(err2,done) {
+                    if (err2) return callback(err2,undefined);
+                    callback(undefined,'success');
+                });
             });
         });
-    });
+    }
+    
+    
     
 }
 
@@ -150,7 +186,7 @@ exports.removeOnAuthId = function(authId,callback) {
 
     var collection = 'authentication';
     var query = {
-        authId:authId
+        _id: ObjectId(authId)
     };
 
     mon.blowup(collection, query, function(err,done) {
