@@ -50,6 +50,7 @@ var BookManagement = require('./Pages/S-BookManagement');
 var Assistant = require('./Pages/S-LibraryAssistant');
 var Borrow = require('./Pages/S-BookBorrow');
 var Return = require('./Pages/S-BookReturn');
+var Browse = require('./Pages/S-Browse');
 
 var NotFound = require('./Pages/S-NotFound');
 var PageError = require('./Pages/S-Error');
@@ -65,6 +66,7 @@ app.use('/bookmanagement', BookManagement);
 app.use('/assistant', Assistant);
 app.use('/borrow', Borrow);
 app.use('/return', Return);
+app.use('/browse', Browse);
 
 app.use('/404', NotFound);
 app.use('/error', PageError);
