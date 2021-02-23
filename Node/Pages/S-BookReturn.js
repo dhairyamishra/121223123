@@ -63,7 +63,7 @@ router.get('/',function(req,res,next) {
     });
 });
 
-router.post('/borrowBook',function(req,res,next) {
+router.post('/returnBook',function(req,res,next) {
 
     // helmet makes the page not render html, unless the content type is set
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -76,21 +76,17 @@ router.post('/borrowBook',function(req,res,next) {
         if (err) return next(err);
         //If the client is valid redirect them to the appropiate page
         if(valid) { 
-            log.silly(JSON.stringify({msg:'assistant borrow attempt', sess: cookie}));
+            log.silly(JSON.stringify({msg:'assistant return attempt', sess: cookie}));
 
-            borrowBook(req.body.bookId, req.body.userId, req.body.type, function(err,success) {
+            returnBook(req.body.bookId, req.body.userId, req.body.type, function(err,success) {
                 if (err) return next(err);
                 
                 if (success=='success') {
                     res.send('success');
                     res.end();
                 }
-                else if (success=='usererror') {
-                    res.send('usererror');
-                    res.end();
-                }
-                else  if (success=='bookerror'){
-                    res.send('bookerror');
+                else if (success=='notfound') {
+                    res.send('notfound');
                     res.end();
                 }
                 else {
@@ -189,7 +185,7 @@ function Template() {
         <a class="navbar-brand" href="/return" data-toggle="tooltip" data-placement="top" title="Book Return">Return</a>
     </nav>
     <div class="mt-2 text-center">
-        <h3 class="pt-2 pb-2 text-center text-dark">Book Borrow</h3>
+        <h3 class="pt-2 pb-2 text-center text-dark">Book Return</h3>
         <h5 class="pt-2 pb-2 text-center text-secondary">Search for a book</h5>
         <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" data-bookId="" data-toggle="tooltip" data-placement="top" title="Enter a search" placeholder="Title" id="searchBook">
 
@@ -208,8 +204,8 @@ function Template() {
         </div>
         
         <div class="mx-auto text-center bg-dark mt-4 w-50 rounded">
-            <button class="btn btn-lg btn-primary w-100" id="submit" type="button" onclick="borrowBook();" data-toggle="tooltip" data-placement="top" title="Click to borrow a book">
-            Borrow book
+            <button class="btn btn-lg btn-primary w-100" id="submit" type="button" onclick="returnBook();" data-toggle="tooltip" data-placement="top" title="Click to return a book">
+            Return book
         </button>
         </div>
         </div>
@@ -219,7 +215,7 @@ function Template() {
     var jsFile = `
         <script src="sodium.js"></script>
         <script src="cryptoclient.js"></script>
-        <script src="bookborrow.js"></script>
+        <script src="bookreturn.js"></script>
     `;
     return addHead(body,jsFile);
 }
@@ -263,69 +259,81 @@ function addHead(body,jsFile) {
 
 //*********************************************** SPECIAL FUNCTIONS *********************************************
 
-function borrowBook(bookId, userId, type, callback) {
-    validateUser(userId, function(err, validUser, booklist) {
+function returnBook(bookId, userId, type, callback) {
+    var collection = 'bookActivity';
+    var attributes = ['_id'];
+    var query = {
+        bookId: ObjectId(bookId),
+        userId: ObjectId(userId),
+        $or: [
+            {type:'borrow'},
+            {type:'reserved'}
+        ],
+        returned:'false'
+    }
+    var sort = {};
+
+    mon.select(collection, attributes, query, sort, function(err, res) {
         if (err) return callback(err, undefined);
 
-        if (validUser) {
-            validateBook(bookId, function(err, validBook, userlist) {
+        if (res.length > 0) {
+            var activityId = res[0]._id;
+
+            var collection = 'bookActivity';
+            var values = {
+                $set: {
+                    returned: 'true'
+                }
+            };
+            var query = {
+                bookId: ObjectId(bookId),
+                userId: ObjectId(userId),
+                $or: [
+                    {type:'borrow'},
+                    {type:'reserved'}
+                ],
+            };
+
+            mon.update(collection, values, query, function(err, done) {
                 if (err) return callback(err, undefined);
 
-                if (validBook) {
-                    var collection = 'bookActivity';
+                var collection = 'books';
+                var values = {
+                    $pull: {
+                        userlist: ObjectId(activityId)
+                    }
+                };
+                var query = {
+                    _id : ObjectId(bookId)
+                };
+
+                mon.update(collection, values, query, function(err, done) {
+                    if (err) return callback(err, undefined);
+
+                    var collection = 'authentication';
                     var values = {
-                        bookId: ObjectId(bookId),
-                        userId: ObjectId(userId),
-                        type: type,
-                        returned: 'false',
-                        date: time.getTime()
+                        $pull: {
+                            booklist: ObjectId(activityId)
+                        }
+                    };
+                    var query = {
+                        _id : ObjectId(userId)
                     };
 
-                    mon.insert(collection, values, function(err, activityId) {
+                    mon.update(collection, values, query, function(err, done) {
                         if (err) return callback(err, undefined);
 
-                        var collection = 'books';
-                        var values = {
-                            $push: {
-                                userlist: ObjectId(activityId)
-                            }
-                        };
-                        var query = {
-                            _id : ObjectId(bookId)
-                        };
 
-                        mon.update(collection, values, query, function(err, done) {
-                            if (err) return callback(err, undefined);
-
-                            var collection = 'authentication';
-                            var values = {
-                                $push: {
-                                    booklist: ObjectId(activityId)
-                                }
-                            };
-                            var query = {
-                                _id : ObjectId(userId)
-                            };
-
-                            mon.update(collection, values, query, function(err, done) {
-                                if (err) return callback(err, undefined);
-
-
-                                callback(undefined, 'success');
-                            });
-                        });
+                        callback(undefined, 'success');
                     });
-                }
-                else {
-                    return callback(undefined, 'bookerror');
-                }
+                });
             });
-            
         }
         else {
-            return callback(undefined, 'usererror');
+            return callback(undefined, 'notfound')
         }
-    })
+        
+    });
 }
 
 function validateUser(userId, callback) {
@@ -385,7 +393,11 @@ function validateBook(bookId, callback) {
 function searchUser(searchString, callback) {
     var collection = 'authentication';
     var attributes = ['_id', 'info.name', 'info.ucard'];
-    var searchExpression = new RegExp(searchString, 'i');
+    try {
+        var searchExpression = new RegExp(searchString, 'i');
+    } catch (error) {
+        var searchExpression = new RegExp('');
+    }
     var query = {
         $or: [
             {username: searchExpression},
@@ -421,7 +433,11 @@ function genUserSearchHTML(userlist) {
 function searchBook(searchString, callback) {
     var collection = 'books';
     var attributes = ['_id', 'info.title', 'info.isbn'];
-    var searchExpression = new RegExp(searchString, 'i');
+    try {
+        var searchExpression = new RegExp(searchString, 'i');
+    } catch (error) {
+        var searchExpression = new RegExp('');
+    }
     var query = {
         $or: [
             {['info.title']: searchExpression},

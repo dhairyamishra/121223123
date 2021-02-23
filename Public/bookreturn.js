@@ -9,7 +9,7 @@ function canSubmit() {
     return good;
 }
 
-function borrowBook() {
+function returnBook() {
     if (!canSubmit()) {
         console.log('cant submit');
         // document.getElementById('submitwarning').className = "mx-auto text-center mt-2";
@@ -19,30 +19,28 @@ function borrowBook() {
     $.ajax({
         global: false,
         type: 'POST',
-        url: '/borrow/borrowBook', //The url to post to on the server
+        url: '/return/returnBook', //The url to post to on the server
         dataType: 'html',
 
         //The data to send to the server
         data: {
             bookId: document.getElementById('searchBook').getAttribute('data-bookid'),
             userId: document.getElementById('searchUser').getAttribute('data-userid'),
-            type: 'borrow'
+            type: 'return'
             
         },
 
         //The response from the server
         success: function (result) {
+            console.log(result);
             if (result == '/login') {
                 window.location.replace(result);
             }
             else if (result == 'success') {
-                window.location.replace('/borrow');
+                window.location.replace('/return');
             }
-            else if (result == 'usererror') {
-                document.getElementById('submitwarning').innerText = "That user cannot borrow any more books";
-            }
-            else if (result == 'bookerror') {
-                document.getElementById('submitwarning').innerText = "That book has no more copies to borrow";
+            else if (result == 'notfound') {
+                document.getElementById('submitwarning').innerText = "That user has not borrowed that book";
             }
             else {
                 // usernameTaken();
@@ -61,7 +59,7 @@ function searchUser() {
     $.ajax({
         global: false,
         type: 'POST',
-        url: '/borrow/searchUser', //The url to post to on the server
+        url: '/return/searchUser', //The url to post to on the server
         dataType: 'html',
 
         //The data to send to the server
@@ -98,7 +96,7 @@ function searchBook() {
     $.ajax({
         global: false,
         type: 'POST',
-        url: '/borrow/searchBook', //The url to post to on the server
+        url: '/return/searchBook', //The url to post to on the server
         dataType: 'html',
 
         //The data to send to the server
