@@ -268,17 +268,20 @@ function borrowBook(bookId, userId, type, callback) {
         if (err) return callback(err, undefined);
 
         if (validUser) {
-            validateBook(bookId, function(err, validBook, userlist) {
+            validateBook(bookId, function(err, validBook, isShortTerm) {
                 if (err) return callback(err, undefined);
 
                 if (validBook) {
+                    var numDays = (isShortTerm=='true' ? 7: 28);
                     var collection = 'bookActivity';
                     var values = {
                         bookId: ObjectId(bookId),
                         userId: ObjectId(userId),
                         type: type,
                         returned: 'false',
-                        date: time.getTime()
+                        reminded: 'false',
+                        date: time.getTime(),
+                        duedate: time.getTime(0,0,numDays)
                     };
 
                     mon.insert(collection, values, function(err, activityId) {
@@ -364,7 +367,7 @@ function validateUser(userId, callback) {
 
 function validateBook(bookId, callback) {
     var collection = 'books';
-    var attributes = ['info.copies', 'userlist'];
+    var attributes = ['info.copies', 'info.shortTerm', 'userlist'];
     var query = {
         _id : ObjectId(bookId)
     };
@@ -374,7 +377,7 @@ function validateBook(bookId, callback) {
         if (err) return callback(err, undefined, undefined);
 
         if (res[0].info.copies > res[0].userlist.length) {
-            return callback(undefined, true, res[0].userlist);
+            return callback(undefined, true, res[0].info.shortTerm);
         }
         else {
             return callback(undefined, false, undefined);

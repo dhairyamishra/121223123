@@ -76,7 +76,7 @@ router.post('/createBook', function(req,res,next) {
         //If the client is valid redirect them to the appropiate page
         if(valid) {
             // create device from req.body
-            createBook(req.body.title, req.body.author, req.body.isbn, req.body.numCopies, function(err,done) {
+            createBook(req.body.title, req.body.author, req.body.isbn, req.body.numCopies, req.body.term, function(err,done) {
                 if (err) return next(err);
 
                 
@@ -128,6 +128,10 @@ function Template() {
                             <br>
                             <h5 class="pt-2 pb-2 text-center text-secondary">Number of copies</h5>
                             <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" placeholder="Number of copies" id="numCopies" data-toggle="tooltip" data-placement="top" title="Enter the number of copies of the book">
+
+                            <br>
+                            <h5 class="pt-2 pb-2 text-center text-secondary">Short-term only?</h5>
+                            <input type="checkbox" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" id="shortterm" data-toggle="tooltip" data-placement="top" title="Click if book is only for short term loans">
 
                             <div class="mx-auto text-center bg-dark mt-4 w-50 rounded">
                                 <button class="btn btn-lg btn-primary w-100" type="button" onclick="createBook();" data-toggle="tooltip" data-placement="top" title="Click to add this book">
@@ -189,7 +193,7 @@ function addHead(body,jsFile) {
 
 //*********************************************** SPECIAL FUNCTIONS *********************************************
 
-function createBook(title, author, isbn, numCopies, callback) {
+function createBook(title, author, isbn, numCopies, term, callback) {
 
         var collection = 'books';
         var values = {
@@ -197,7 +201,8 @@ function createBook(title, author, isbn, numCopies, callback) {
                 title: title,
                 author: author,
                 isbn: isbn,
-                copies: numCopies
+                copies: numCopies,
+                shortTerm: term
             },
             userlist: []
         };    

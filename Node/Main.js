@@ -12,6 +12,7 @@ const https = require('https'); // https module is used to secure traffic
 const fs = require('fs'); // module to read from and write to file
 const mon = require('./Utils/GeneralMongo'); // module to make database access cleaner
 const encryption = require('./Utils/CryptoServer'); // module to handle server encryption
+const reminder = require('./Utils/Reminder'); // module to reminder members that a book is due soon
 const bodyParser = require('body-parser'); // parses ajax body
 const cookieParser = require('cookie-parser'); // allows the use of cookies to track sessions
 var log = require('./Utils/Log').clog;
@@ -51,6 +52,7 @@ var Assistant = require('./Pages/S-LibraryAssistant');
 var Borrow = require('./Pages/S-BookBorrow');
 var Return = require('./Pages/S-BookReturn');
 var Browse = require('./Pages/S-Browse');
+var Search = require('./Pages/S-Search');
 
 var NotFound = require('./Pages/S-NotFound');
 var PageError = require('./Pages/S-Error');
@@ -67,6 +69,7 @@ app.use('/assistant', Assistant);
 app.use('/borrow', Borrow);
 app.use('/return', Return);
 app.use('/browse', Browse);
+app.use('/search', Search);
 
 app.use('/404', NotFound);
 app.use('/error', PageError);
@@ -128,22 +131,27 @@ function init() {
         // initialize connection to database
         mon.init(connectionUrl, function(err,done) {
             if (err) log.error(err);
-            // initialize encryption
-            encryption.init(function(err2,done) {
-                if (err2) log.error(err2);
-                // create http server on port defined in setup. json
-                https.createServer(httpsAuth,app).listen(setup.secure_server_port, function() {
-                    // create http server ** Only used to redirect client to secure server
-                    http.createServer(app,function(req,res) {
-                        // immediately redirect client to secure server
-                        res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url});
-                        res.end();
-                    }).listen(setup.insecure_server_port, function() { // the http server is on the port defined in setup.json
-                        // If the server is setup correctly, print to console
-                        log.info(`SE Library System listening on port ${setup.secure_server_port}`);
+            // initialize reminder
+            reminder.init(setup.num_reminder_days, function(err, done) {
+                if (err) log.error(err);
+                // initialize encryption
+                encryption.init(function(err2,done) {
+                    if (err2) log.error(err2);
+                    // create http server on port defined in setup. json
+                    https.createServer(httpsAuth,app).listen(setup.secure_server_port, function() {
+                        // create http server ** Only used to redirect client to secure server
+                        http.createServer(app,function(req,res) {
+                            // immediately redirect client to secure server
+                            res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url});
+                            res.end();
+                        }).listen(setup.insecure_server_port, function() { // the http server is on the port defined in setup.json
+                            // If the server is setup correctly, print to console
+                            log.info(`SE Library System listening on port ${setup.secure_server_port}`);
+                        });
                     });
                 });
             });
+            
         });
         
 

@@ -153,10 +153,11 @@ function getPage(callback) {
 }
 
 function Template(publickey) {
-    var body = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand text-light" href="#">Library</a>
-    </nav>
+    var body = `<nav class="navbar navbar-dark bg-primary">
+                    <a class="navbar-brand" href="/browse" data-toggle="tooltip" data-placement="top" title="Browse book collection">Browse</a>
+                    <a class="navbar-brand" href="/search" data-toggle="tooltip" data-placement="top" title="Search for a book">Search</a>
+                    <a class="navbar-brand" href="/login" data-toggle="tooltip" data-placement="top" title="Login">Login</a>
+                </nav>
 
     <div id="main" class="card mx-auto mt-2" style="width: 25rem;" data-publickey="${publickey}">
         <div class="card-body">
@@ -328,8 +329,8 @@ function sendForgotEmail(username,url, callback) {
             To change you password, click the link below
             ${link}`;
 
-            if (user.email != undefined) {
-                mailer.sendEmail(user.email,subject,body, function(err, sent) {
+            if (user.info.email != undefined) {
+                mailer.sendEmail(user.info.email,subject,body, function(err, sent) {
                     if (err) return callback(err,undefined);
     
                     callback(undefined,true);

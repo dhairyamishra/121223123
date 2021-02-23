@@ -33,6 +33,7 @@ function createBook(sender) {
     formData.append('author',document.getElementById('author').value);
     formData.append('isbn',document.getElementById('isbn').value);
     formData.append('numCopies',document.getElementById('numCopies').value);
+    formData.append('term',document.getElementById('shortterm').checked);
 
     $.ajax({
         global: false,
@@ -45,7 +46,8 @@ function createBook(sender) {
             title:document.getElementById('title').value,
             author:document.getElementById('author').value,
             isbn:document.getElementById('isbn').value,
-            numCopies:document.getElementById('numCopies').value
+            numCopies:document.getElementById('numCopies').value,
+            term:document.getElementById('shortterm').checked
         },
 
         //The response from the server
