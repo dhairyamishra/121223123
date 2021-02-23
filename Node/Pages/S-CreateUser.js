@@ -89,7 +89,7 @@ router.post('/createUser',function(req,res,next) {
 
                     if (success == 'success') {
                         log.silly(JSON.stringify({msg:'user created', sess: cookie}));
-                        res.send('/manage');
+                        res.send('/usermanagement');
                         res.end();
                     }
                     else {

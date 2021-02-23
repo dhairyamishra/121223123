@@ -47,6 +47,8 @@ var CreateBook = require('./Pages/S-CreateBook');
 var CreateUser = require('./Pages/S-CreateUser');
 var UserManagement = require('./Pages/S-UserManagement');
 var BookManagement = require('./Pages/S-BookManagement');
+var Assistant = require('./Pages/S-LibraryAssistant');
+var Borrow = require('./Pages/S-BookBorrow');
 
 var NotFound = require('./Pages/S-NotFound');
 var PageError = require('./Pages/S-Error');
@@ -59,6 +61,8 @@ app.use('/createbook', CreateBook);
 app.use('/createuser', CreateUser);
 app.use('/usermanagement', UserManagement);
 app.use('/bookmanagement', BookManagement);
+app.use('/assistant', Assistant);
+app.use('/borrow', Borrow);
 
 app.use('/404', NotFound);
 app.use('/error', PageError);

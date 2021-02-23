@@ -73,7 +73,8 @@ exports.addAuthForLevel = function(username,level,password,name,ucard,address,ph
                 address: address,
                 phone: phone,
                 email: email
-            }
+            },
+            booklist: []
         };
 
         //Add the new user to the database
