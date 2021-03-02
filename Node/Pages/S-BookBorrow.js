@@ -381,7 +381,7 @@ function borrowBook(bookId, userId, type, callback) {
 
 function validateUser(userId, bookId, callback) {
     var collection = 'authentication';
-    var attributes = ['booklist','level'];
+    var attributes = ['booklist','level','lateReturnList'];
     var query = {
         _id: ObjectId(userId)
     };
@@ -390,47 +390,56 @@ function validateUser(userId, bookId, callback) {
     mon.select(collection,attributes,query,sort,function(err,res) {
         if (err) return callback(err, undefined, undefined);
 
-        var collection = 'bookActivity';
-        var attributes = ['_id'];
-        var query = {
-            userId : ObjectId(userId),
-            bookId : ObjectId(bookId),
-            type : 'reserve'
+        // if less than 5 late books in past month
+        if (res[0].lateReturnList.reduce((a,b) => a+(b>time.getTime(0,-1)?1:0),0) < 5) {
+            var collection = 'bookActivity';
+            var attributes = ['_id'];
+            var query = {
+                userId : ObjectId(userId),
+                bookId : ObjectId(bookId),
+                type : 'reserve'
+            }
+            var sort = {};
+    
+            mon.select(collection, attributes, query, sort, function(err, isReserved) {
+                if (err) return callback(err, undefined, undefined);
+    
+                if (isReserved !== undefined && isReserved.length!==0) {
+                    isReserved = true;
+                }
+                else {
+                    isReserved = false;
+                }
+    
+                if (res[0].level == 1) {
+                    if (res[0].booklist.length < 6) {
+                        return callback(undefined, true, isReserved);
+                    }
+                    else {
+                        return callback(undefined, false, isReserved);
+                    }
+                }
+                else if(res[0].level == '2' || res[0].level == '3') {
+                    if (res[0].booklist.length < 12) {
+                        return callback(undefined, true, isReserved);
+                    }
+                    else {
+                        return callback(undefined, false, isReserved);
+                    }
+                }
+                else {
+                    return callback(undefined, false, isReserved);
+                }
+    
+    
+            });
         }
-        var sort = {};
+        else {
+            log.info(`more than 5 late books in the last month`);
+            return callback(undefined, false, false);
+        }
 
-        mon.select(collection, attributes, query, sort, function(err, isReserved) {
-            if (err) return callback(err, undefined, undefined);
-
-            if (isReserved !== undefined && isReserved.length!==0) {
-                isReserved = true;
-            }
-            else {
-                isReserved = false;
-            }
-
-            if (res[0].level == 1) {
-                if (res[0].booklist.length < 6) {
-                    return callback(undefined, true, isReserved);
-                }
-                else {
-                    return callback(undefined, false, isReserved);
-                }
-            }
-            else if(res[0].level == '2' || res[0].level == '3') {
-                if (res[0].booklist.length < 12) {
-                    return callback(undefined, true, isReserved);
-                }
-                else {
-                    return callback(undefined, false, isReserved);
-                }
-            }
-            else {
-                return callback(undefined, false, isReserved);
-            }
-
-
-        });
+        
 
         
 

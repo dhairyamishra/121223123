@@ -261,13 +261,13 @@ function addHead(body,jsFile) {
 
 function returnBook(bookId, userId, type, callback) {
     var collection = 'bookActivity';
-    var attributes = ['_id'];
+    var attributes = ['_id', 'duedate'];
     var query = {
         bookId: ObjectId(bookId),
         userId: ObjectId(userId),
         $or: [
             {type:'borrow'},
-            {type:'reserved'}
+            {type:'reserve'}
         ],
         returned:'false'
     }
@@ -290,7 +290,7 @@ function returnBook(bookId, userId, type, callback) {
                 userId: ObjectId(userId),
                 $or: [
                     {type:'borrow'},
-                    {type:'reserved'}
+                    {type:'reserve'}
                 ],
             };
 
@@ -311,11 +311,26 @@ function returnBook(bookId, userId, type, callback) {
                     if (err) return callback(err, undefined);
 
                     var collection = 'authentication';
-                    var values = {
-                        $pull: {
-                            booklist: ObjectId(activityId)
-                        }
-                    };
+
+                    // if book is returned late
+                    if (res[0].duedate > time.getTime()) {
+                        var values = {
+                            $pull: {
+                                booklist: ObjectId(activityId)
+                            }
+                        };
+                    }
+                    else {
+                        var values = {
+                            $pull: {
+                                booklist: ObjectId(activityId)
+                            },
+                            $push : {
+                                lateReturnList: time.getTime()
+                            }
+                        };
+                    }
+                    
                     var query = {
                         _id : ObjectId(userId)
                     };

@@ -74,7 +74,8 @@ exports.addAuthForLevel = function(username,level,password,name,ucard,address,ph
                 phone: phone,
                 email: email
             },
-            booklist: []
+            booklist: [],
+            lateReturnList: []
         };
 
         //Add the new user to the database
