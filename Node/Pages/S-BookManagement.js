@@ -315,7 +315,7 @@ function genResultHTML(booklist) {
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
               <div class="modal-content">
                 <div class="modal-header bg-primary">
-                  <h5 class="modal-title pt-2 text-light">Update Details for ${book.title}</h5>
+                  <h5 class="modal-title pt-2 text-light">Update Details for ${book.info.title}</h5>
                 </div>
                 <div class="modal-body text-centered">
                 <div class="text-centered">

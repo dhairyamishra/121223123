@@ -189,56 +189,33 @@ function genResultHTML(booklist) {
     for (var i = 0; i < booklist.length; i++) {
         var book = booklist[i];
 
-        html += `
-            <div class="modal fade" id="UpdateDetailsModal-${book._id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header bg-primary">
-                  <h5 class="modal-title pt-2 text-light">Update Details for ${book.title}</h5>
+        html += `<div class="modal fade" id="DetailsModal-${book._id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title pt-2 text-light">Details for ${book.info.title}</h5>
+                        </div>
+                        <div class="modal-body text-centered">
+                            <div class="text-centered">
+                                <h6 class="pt-2 text-dark text-centered">Book title: ${book.info.title}</h6>
+                                <h6 class="pt-2 text-dark text-centered">Book author: ${book.info.author}</h6>
+                                <h6 class="pt-2 text-dark text-centered">Book ISBN: ${book.info.isbn}</h6>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body text-centered">
-                <div class="text-centered">
-                    <h6 class="pt-2 text-dark text-centered">Edit book's title</h6>
-                    <input type="text" class="form-control mb-2" id="newtitle-${book._id}" placeholder="Title" aria-label="Title" aria-describedby="basic-addon2" value="${book.info.title}" data-toggle="tooltip" data-placement="top" title="Enter new title here">
-                    <h6 class="pt-2 text-dark text-centered">Edit book's author</h6>
-                    <input type="text" class="form-control mb-2" id="newauthor-${book._id}" placeholder="Author" aria-label="Author" aria-describedby="basic-addon2" value="${book.info.author}"data-toggle="tooltip" data-placement="top" title="Enter new author here">
-                    <h6 class="pt-2 text-dark text-centered">Edit book's ISBN</h6>
-                    <input type="text" class="form-control mb-2" id="newisbn-${book._id}" placeholder="ISBN" aria-label="ISBN" aria-describedby="basic-addon2" value="${book.info.isbn}"data-toggle="tooltip" data-placement="top" title="Enter new isbn here">
-                    <h6 class="pt-2 text-dark text-centered">Edit books number of copies</h6>
-                    <input type="text" class="form-control mb-2" id="newnumcopies-${book._id}" placeholder="Number of Copies" aria-label="Number of Copies" aria-describedby="basic-addon2" value="${book.info.copies}"data-toggle="tooltip" data-placement="top" title="Enter new number of copies here">
+            </div>
                 
-                    <button class=" btn w-auto mb-2 mx-auto btn-md btn-primary btn-block" id="submitDetails-${book._id}" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Click to edit book's details" onclick="editDetails('${book._id}')">Submit</button>
-                </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Close">Close</button>
-                </div>
-              </div>
+                
+            <div class="bg-dark text-center rounded mb-2 p-1" id="book-${book._id}" name="book">
+
+                <h5 class="text-center text-light">${book.info.title}</h5>
+                <button type="button" class="btn w-75 mb-2 mx-auto px-auto btn-lg btn-light rounded" data-toggle="modal" data-target="#DetailsModal-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to view book's details">Details</button>
+                    
             </div>
-          </div>
-    
-          <div class="modal fade" id="DeleteModal-${book._id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header bg-danger">
-                <h5 class="modal-title pt-2 text-light">Are you sure you want to delete this book? This cannot be undone.</h5>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeBook('${book._id}')">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Cancel">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-    
-        <div class="bg-dark text-center rounded mb-2 p-1" id="book-${book._id}" name="book">
-            <h5 class="text-center text-light">${book.info.title}</h5>
-    
-    
-            <button class="btn w-75 mb-2 mx-auto btn-lg btn-light btn-block" data-toggle="modal" data-target="#UpdateDetailsModal-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to edit book's details">Edit book's details</button>
-            <button class="btn w-75 mb-2 mx-auto btn-lg btn-light btn-block" data-toggle="modal" data-target="#DeleteModal-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to delete book from system">Delete book from system</button>
-            
-        </div>
             
             `;
 

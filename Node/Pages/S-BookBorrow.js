@@ -424,7 +424,11 @@ function genUserSearchHTML(userlist) {
 function searchBook(searchString, callback) {
     var collection = 'books';
     var attributes = ['_id', 'info.title', 'info.isbn'];
-    var searchExpression = new RegExp(searchString, 'i');
+    try {
+        var searchExpression = new RegExp(searchString, 'i');
+    } catch (error) {
+        var searchExpression = new RegExp('');
+    }
     var query = {
         $or: [
             {['info.title']: searchExpression},
