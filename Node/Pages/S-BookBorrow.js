@@ -203,6 +203,13 @@ function Template() {
         <div class="btn-group-vertical w-75 mx-auto text-center" role="group" aria-label="Users" id="userSearchResults">
         </div>
 
+        
+        <h5 class="pt-2 pb-2 text-center text-secondary">Borrow Type</h5>
+        <select class="custom-select bg-light mr-2 w-auto" id="borrowType" data-toggle="tooltip" data-placement="top" title="Select a search type here">
+            <option value="borrow" selected>Borrow</option>
+            <option value="reserve">Reserve</option>
+        </select>   
+
         <div class="mx-auto text-center mt-2" id="submitwarning">
             <h4 class="text-danger"></h4>
         </div>
@@ -264,65 +271,106 @@ function addHead(body,jsFile) {
 //*********************************************** SPECIAL FUNCTIONS *********************************************
 
 function borrowBook(bookId, userId, type, callback) {
-    validateUser(userId, function(err, validUser, booklist) {
+    validateUser(userId, bookId, function(err, validUser, isReserved) {
         if (err) return callback(err, undefined);
 
         if (validUser) {
-            validateBook(bookId, function(err, validBook, isShortTerm) {
-                if (err) return callback(err, undefined);
 
-                if (validBook) {
-                    var numDays = (isShortTerm=='true' ? 7: 28);
-                    var collection = 'bookActivity';
-                    var values = {
-                        bookId: ObjectId(bookId),
-                        userId: ObjectId(userId),
-                        type: type,
-                        returned: 'false',
-                        reminded: 'false',
-                        date: time.getTime(),
-                        duedate: time.getTime(0,0,numDays)
-                    };
+            if(isReserved) {
+                // borrow reserved book
+                validateReservedBook(bookId, userId, function(err, validBook, activityId, isShortTerm) {
+                    if (err) return callback(err, undefined);
 
-                    mon.insert(collection, values, function(err, activityId) {
-                        if (err) return callback(err, undefined);
-
-                        var collection = 'books';
+                    if (validBook) {
+                        var numDays = (isShortTerm=='true' ? 7: 28);
+                        var collection = 'bookActivity';
                         var values = {
-                            $push: {
-                                userlist: ObjectId(activityId)
+                            $set: {
+                                type: type,
+                                returned: 'false',
+                                reminded: 'false',
+                                date: time.getTime(),
+                                duedate: time.getTime(0,0,numDays)
                             }
                         };
                         var query = {
-                            _id : ObjectId(bookId)
+                            _id:ObjectId(activityId)
+                            // bookId : ObjectId(bookId),
+                            // userId : ObjectId(userId),
+                            // type : 'reserve'
                         };
-
-                        mon.update(collection, values, query, function(err, done) {
+    
+                        mon.update(collection, values, query, function(err, documents) {
                             if (err) return callback(err, undefined);
+    
+                            callback(undefined, 'success');
+                        });
+                    }
+                    else {
+                        return callback(undefined, 'bookerror');
+                    }
+                });
 
-                            var collection = 'authentication';
+            }
+            else {
+                // borrow book
+                validateBook(bookId, function(err, validBook, isShortTerm) {
+                    if (err) return callback(err, undefined);
+    
+                    if (validBook || type=='reserve') {
+                        var numDays = (isShortTerm=='true' ? 7: 28);
+                        var collection = 'bookActivity';
+                        var values = {
+                            bookId: ObjectId(bookId),
+                            userId: ObjectId(userId),
+                            type: type,
+                            returned: 'false',
+                            reminded: 'false',
+                            date: time.getTime(),
+                            duedate: time.getTime(0,0,numDays)
+                        };
+    
+                        mon.insert(collection, values, function(err, activityId) {
+                            if (err) return callback(err, undefined);
+    
+                            var collection = 'books';
                             var values = {
                                 $push: {
-                                    booklist: ObjectId(activityId)
+                                    userlist: ObjectId(activityId)
                                 }
                             };
                             var query = {
-                                _id : ObjectId(userId)
+                                _id : ObjectId(bookId)
                             };
-
+    
                             mon.update(collection, values, query, function(err, done) {
                                 if (err) return callback(err, undefined);
-
-
-                                callback(undefined, 'success');
+    
+                                var collection = 'authentication';
+                                var values = {
+                                    $push: {
+                                        booklist: ObjectId(activityId)
+                                    }
+                                };
+                                var query = {
+                                    _id : ObjectId(userId)
+                                };
+    
+                                mon.update(collection, values, query, function(err, done) {
+                                    if (err) return callback(err, undefined);
+    
+    
+                                    callback(undefined, 'success');
+                                });
                             });
                         });
-                    });
-                }
-                else {
-                    return callback(undefined, 'bookerror');
-                }
-            });
+                    }
+                    else {
+                        return callback(undefined, 'bookerror');
+                    }
+                });
+            }
+         
             
         }
         else {
@@ -331,7 +379,7 @@ function borrowBook(bookId, userId, type, callback) {
     })
 }
 
-function validateUser(userId, callback) {
+function validateUser(userId, bookId, callback) {
     var collection = 'authentication';
     var attributes = ['booklist','level'];
     var query = {
@@ -342,25 +390,49 @@ function validateUser(userId, callback) {
     mon.select(collection,attributes,query,sort,function(err,res) {
         if (err) return callback(err, undefined, undefined);
 
-        if (res[0].level == 1) {
-            if (res[0].booklist.length < 6) {
-                return callback(undefined, true, res[0].booklist);
+        var collection = 'bookActivity';
+        var attributes = ['_id'];
+        var query = {
+            userId : ObjectId(userId),
+            bookId : ObjectId(bookId),
+            type : 'reserve'
+        }
+        var sort = {};
+
+        mon.select(collection, attributes, query, sort, function(err, isReserved) {
+            if (err) return callback(err, undefined, undefined);
+
+            if (isReserved !== undefined && isReserved.length!==0) {
+                isReserved = true;
             }
             else {
-                return callback(undefined, false, undefined);
+                isReserved = false;
             }
-        }
-        else if(res[0].level == '2' || res[0].level == '3') {
-            if (res[0].booklist.length < 12) {
-                return callback(undefined, true, res[0].booklist);
+
+            if (res[0].level == 1) {
+                if (res[0].booklist.length < 6) {
+                    return callback(undefined, true, isReserved);
+                }
+                else {
+                    return callback(undefined, false, isReserved);
+                }
+            }
+            else if(res[0].level == '2' || res[0].level == '3') {
+                if (res[0].booklist.length < 12) {
+                    return callback(undefined, true, isReserved);
+                }
+                else {
+                    return callback(undefined, false, isReserved);
+                }
             }
             else {
-                return callback(undefined, false, undefined);
+                return callback(undefined, false, isReserved);
             }
-        }
-        else {
-            return callback(undefined, false, undefined);
-        }
+
+
+        });
+
+        
 
     });
 }
@@ -383,6 +455,61 @@ function validateBook(bookId, callback) {
             return callback(undefined, false, undefined);
         }
     });
+}
+
+function validateReservedBook(bookId, userId, callback) {
+    // var collection = 'books';
+    // var attributes = ['info.copies', 'info.shortTerm', 'userlist'];
+    // var query = {
+    //     _id : ObjectId(bookId)
+    // };
+    // var sort = {};
+
+    // mon.select(collection, attributes, query, sort, function(err, res) {
+    //     if (err) return callback(err, undefined, undefined);
+
+    //     if (res[0].info.copies > res[0].userlist.length) {
+    //         return callback(undefined, true, res[0].info.shortTerm);
+    //     }
+    //     else {
+    //         return callback(undefined, false, undefined);
+    //     }
+    // });
+    
+    var collection = 'books';
+    var query = {
+        _id : ObjectId(bookId)
+    };
+    var from = 'bookActivity';
+    var localField = 'userlist';
+    var foreignField = '_id';
+    var as = 'activity';
+
+    mon.agg(collection, query, from, localField, foreignField, as, function(err, res) {
+        if (err) return callback(err, undefined, undefined,undefined);
+
+        callback(undefined, (checkNumBorrowed(res[0])<res[0].info.copies), getActivityId(res[0],userId), res[0].info.shortTerm);
+    });
+}
+
+function checkNumBorrowed(book) {
+    var count=0;
+    for (var i = 0; i < book.activity.length; i++) {
+        if (book.activity[i].type == 'borrow') {
+            count++;
+        }
+    }
+    return count;
+}
+
+function getActivityId(book,userId) {
+    var activityId = '';
+    for (var i = 0; i < book.activity.length; i++) {
+        if (book.activity[i].type == 'reserve' && book.activity[i].userId == userId) {
+            activityId = book.activity[i]._id;
+        }
+    }
+    return activityId;
 }
 
 function searchUser(searchString, callback) {

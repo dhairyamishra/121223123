@@ -26,7 +26,7 @@ function borrowBook() {
         data: {
             bookId: document.getElementById('searchBook').getAttribute('data-bookid'),
             userId: document.getElementById('searchUser').getAttribute('data-userid'),
-            type: 'borrow'
+            type: document.getElementById('borrowType').value
             
         },
 
