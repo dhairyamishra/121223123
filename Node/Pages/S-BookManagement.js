@@ -371,7 +371,7 @@ function genResultHTML(booklist) {
 function removeBook(id, callback) {
     var collection = 'books';
     var query = {
-        id: ObjectId(id)
+        _id: ObjectId(id)
     };
 
     // remember to delete book from user's booklist
@@ -379,6 +379,40 @@ function removeBook(id, callback) {
     mon.blowup(collection, query, function(err,done) {
         if (err) return callback(err,undefined);
 
-        callback(undefined, true);
-    })
+        var collection = 'bookActivity';
+        var attributes = ['_id'];
+        var query = {
+            bookId : ObjectId(id)
+        }
+        var sort = {};
+
+        mon.select(collection, attributes, query, sort, function(err, activityIds) {
+            if (err) return callback(err, undefined);
+            
+            log.info(`activityIds: ${JSON.stringify(activityIds)}`);
+
+            for (let i = 0; i < activityIds.length; i++) {
+                var collection = 'authentication';
+                var values = {
+                    $pull : {
+                        booklist: ObjectId(activityIds[i]._id)
+                    }
+    
+                }
+                var query = {
+    
+                }
+                mon.update(collection, values, query, function(err,done) {
+                    // can only callback once
+                    if (i==activityIds.length-1) {
+                        if (err) return callback(err, undefined);
+    
+                        callback(undefined, true);
+                    }
+                });
+            }
+
+            
+        });
+    });
 };
