@@ -6,15 +6,15 @@ let transporter = nodemailer.createTransport({
     secure: false,
     requireTLS: true,
     auth: {
-        user: 'ordossystem@gmail.com',
-        pass: '68turquoiseostrich@'
+        user: 'selibrarysystem@gmail.com',
+        pass: 'fgSN$Nt7o#@@mP9?'
     }
 });
 
 
 exports.sendEmail = function(to,sub,msg,callback) {
     let mailOptions = {
-        from: 'ordossystem@gmail.com',
+        from: 'selibrarysystem@gmail.com',
         to: to,
         subject: sub,
         text: msg

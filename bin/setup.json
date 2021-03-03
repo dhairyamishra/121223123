@@ -8,5 +8,7 @@
     "cert_path"             :"../bin/cert.pem",
 
     "log_folder"                :"./bin/",
-    "log_folder_lifetime_days"  : "3"
+    "log_folder_lifetime_days"  : "3",
+
+    "num_reminder_days" : "3"
 }

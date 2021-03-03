@@ -15,12 +15,12 @@ exports.init = function(connectionUrl,callback) {
         
         
         // the database in the cluster is ordos
-        dbo = db.db("ordos");
+        dbo = db.db("library");
         
         // return
         callback(undefined,'done');
     });
-}
+};
 
 // selects attributes from collection that match query
 //select("customers", ["address","name"], {["address.street"]:"Main",name:"Interference", {name:1}}
@@ -37,7 +37,7 @@ exports.select = function(collection, attributes, query, sort, callback) {
         // dbo.close();
         callback(undefined,res);
     });
-}
+};
 
 
 // insert into collection:
@@ -48,7 +48,7 @@ exports.insert = function(collection, data, callback) {
         // dbo.close();
         callback(undefined, data._id);
     });
-}
+};
 
 // deletes all documents that match the query
 // blowup("customers", {name:"Abc Inc"}
@@ -59,7 +59,7 @@ exports.blowup = function(collection, query, callback) {
         
         callback(undefined,'done');
     });
-}
+};
 
 // updates all documents that match the query
 // use $set to set subdocuments
@@ -76,4 +76,42 @@ exports.update = function(collection, values, query, callback) {
         
         callback(undefined,'done');
     });
-}
+};
+
+/*
+[
+  {
+    '$match': {
+      '_id': new ObjectId('6036301c2eefac4348bc8cc1')
+    }
+  }, {
+    '$lookup': {
+      'from': 'books', 
+      'localField': 'bookId', 
+      'foreignField': '_id', 
+      'as': 'string'
+    }
+  }
+]
+*/
+
+exports.agg = function(collection, query, from, localField, foreignField, as, callback) {
+    var pipeline = [
+        {
+          '$match': query
+        }, {
+          '$lookup': {
+            'from': from, 
+            'localField': localField, 
+            'foreignField': foreignField, 
+            'as': as
+          }
+        }
+      ];
+
+    dbo.collection(collection).aggregate(pipeline).toArray(function(err,res) {
+        if (err) return callback(err,undefined);
+        // dbo.close();
+        callback(undefined,res);
+    });
+};
