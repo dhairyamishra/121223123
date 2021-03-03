@@ -2,26 +2,31 @@
 // checks if the document is in a valid submit state
 function canSubmit() {
 
+    
     var good = true;
-
+    var name_test = RegExp('^[a-zA-Z\s]*$');
+    var ucard_test = RegExp('^[a-z]{0,10}+$');
+    var address_test = RegExp('^[a-z]{0,10}+$');
+    var phone_test = RegExp('[0-9]{10}');
+    var email_test = RegExp('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     
     if (document.getElementById('usertype').value == 'none') {
         good = false;
     }
 
-    if (document.getElementById('name').value == '') {
+    if (document.getElementById('name').value == '' || !name_test.test(document.getElementById('name').value)) {
         good = false;
     }
-    if (document.getElementById('ucard').value == '') {
+    if (document.getElementById('ucard').value == '' || !ucard_test.test(document.getElementById('ucard').value)) {
         good = false;
     }
-    if (document.getElementById('address').value == '') {
+    if (document.getElementById('address').value == '' || !address_test.test(document.getElementById('address').value)) {
         good = false;
     }
-    if (document.getElementById('phone').value == '') {
+    if (document.getElementById('phone').value == '' || !phone_test.test(document.getElementById('phone').value)) {
         good = false;
     }
-    if (document.getElementById('email').value == '') {
+    if (document.getElementById('email').value == '' || !email_test.test(document.getElementById('email').value)) {
         good = false;
     }
     if (document.getElementById('usertype').value !== '1') {

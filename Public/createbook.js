@@ -3,22 +3,25 @@
 function canSubmit() {
 
     var good = true;
-    if (document.getElementById('title').value == '') {
+    var title_test = new RegExp('^[a-zA-Z]*$');
+    var author_test = new RegExp('^[a-zA-Z]*$');
+    var isbn_test = new RegExp('^97[0-9]{10-13}$');
+    var numCopies_test = new RegExp('[0-9]');
+    
+    var title = document.getElementById('title').value;
+    var author = document.getElementById('author').value;
+    var isbn = document.getElementById('isbn').value 
+    var numCompies = document.getElementById('numCopies').value
+    
+    if(!title_test.test(title) || title == "")
         good = false;
-    }
-
-    if (document.getElementById('author').value == '') {
+    if(!author_test.test(author) || author == "")
         good = false;
-    }
-
-    if (document.getElementById('isbn').value == '') {
+    if(!isbn_test.test(isbn) || author == "")
         good = false;
-    }
-
-    if (document.getElementById('numCopies').value == '') {
+    if(!numCopies_test.test(numCompies) || author == "")
         good = false;
-    }
-
+    
     return good;
 }
 
