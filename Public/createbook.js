@@ -3,22 +3,36 @@
 function canSubmit() {
 
     var good = true;
-    if (document.getElementById('title').value == '') {
+    var title_test = new RegExp(/^[a-zA-Z\-\s]*$/);
+    var author_test = new RegExp(/^[a-zA-Z\-\s]*$/);
+    var isbn_test = new RegExp(/^[0-9]{10,13}$/);
+    var numCopies_test = new RegExp(/^\d+$/);
+    
+    var title = document.getElementById('title').value;
+    var author = document.getElementById('author').value;
+    var isbn = document.getElementById('isbn').value 
+    var numCompies = document.getElementById('numCopies').value
+    
+    if(!title_test.test(title) || title == "") {
+        document.getElementById(`submitwarning`).innerText = "Please enter a valid title";
+        
         good = false;
     }
+    if(!author_test.test(author) || author == "") {
+        document.getElementById(`submitwarning`).innerText = "Please enter a valid author name";
 
-    if (document.getElementById('author').value == '') {
         good = false;
     }
+    if(!isbn_test.test(isbn) || isbn == "") {
+        document.getElementById(`submitwarning`).innerText = "Please enter a valid isbn (10 to 13 digit number)";
 
-    if (document.getElementById('isbn').value == '') {
         good = false;
     }
+    if(!numCopies_test.test(numCompies) || numCopies == "") {
+        document.getElementById(`submitwarning`).innerText = "Please enter a valid number of copies";
 
-    if (document.getElementById('numCopies').value == '') {
         good = false;
     }
-
     return good;
 }
 

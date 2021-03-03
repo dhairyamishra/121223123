@@ -396,7 +396,10 @@ function genResultHTML(userlist) {
                     <input type="text" class="form-control mb-2" id="newphone-${user._id}" placeholder="Telephone" aria-label="Telephone" aria-describedby="basic-addon2" value="${user.info.phone}"data-toggle="tooltip" data-placement="top" title="Enter new telephone number here">
                     <h6 class="pt-2 text-dark text-centered">Edit user's email</h6>
                     <input type="text" class="form-control mb-2" id="newemail-${user._id}" placeholder="Email" aria-label="Email" aria-describedby="basic-addon2" value="${user.info.email}"data-toggle="tooltip" data-placement="top" title="Enter new email here">
-                    <button class=" btn w-auto mb-2 mx-auto btn-md btn-primary btn-block" id="submitDetails-${user._id}" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Click to edit user's details" onclick="editDetails('${user._id}')">Submit</button>
+                    <div class="mx-auto text-center mt-2">
+                        <h6 class="text-danger" id="submitwarning-${user._id}"></h6>
+                    </div>
+                    <button class=" btn w-auto mb-2 mx-auto btn-md btn-primary btn-block" id="submitDetails-${user._id}" data-toggle="tooltip" data-placement="top" title="Click to edit user's details" onclick="editDetails('${user._id}')">Submit</button>
                 </div>
                 </div>
                 <div class="modal-footer">

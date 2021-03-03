@@ -2,34 +2,47 @@
 // checks if the document is in a valid submit state
 function canSubmit() {
 
+    
     var good = true;
-
+    var name_test = RegExp(/^[a-zA-Z\s]+$/);
+    var ucard_test = RegExp(/^[UAM]-[0-9]{1,10}$/);
+    var address_test = RegExp(/^[\w\s\-\.]+$/);
+    var phone_test = RegExp(/^[0-9]{10}$/);
+    var email_test = RegExp(/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
     
     if (document.getElementById('usertype').value == 'none') {
+        document.getElementById('submitwarning').innerText = "Please select a usertype";
         good = false;
     }
 
-    if (document.getElementById('name').value == '') {
+    if (document.getElementById('name').value == '' || !name_test.test(document.getElementById('name').value)) {
+        document.getElementById('submitwarning').innerText = "Please enter a valid name";
         good = false;
     }
-    if (document.getElementById('ucard').value == '') {
+    if (document.getElementById('ucard').value == '' || !ucard_test.test(document.getElementById('ucard').value)) {
+        document.getElementById('submitwarning').innerText = "Please enter a valid U-card number";
         good = false;
     }
-    if (document.getElementById('address').value == '') {
+    if (document.getElementById('address').value == '' || !address_test.test(document.getElementById('address').value)) {
+        document.getElementById('submitwarning').innerText = "Please enter a valid address";
         good = false;
     }
-    if (document.getElementById('phone').value == '') {
+    if (document.getElementById('phone').value == '' || !phone_test.test(document.getElementById('phone').value)) {
+        document.getElementById('submitwarning').innerText = "Please enter a valid phone number (ex. 1234567899)";
         good = false;
     }
-    if (document.getElementById('email').value == '') {
+    if (document.getElementById('email').value == '' || !email_test.test(document.getElementById('email').value)) {
+        document.getElementById('submitwarning').innerText = "Please enter a valid email";
         good = false;
     }
     if (document.getElementById('usertype').value !== '1') {
         if (document.getElementById('username').value == '') {
+            document.getElementById('submitwarning').innerText = "Please enter a username";
             good = false;
         }
     
         if (document.getElementById('password').value == '') {
+            document.getElementById('submitwarning').innerText = "Please enter a password";
             good = false;
         }
     }
@@ -55,9 +68,10 @@ function graphicSubmit() {
 
 function createUser() {
     if (!canSubmit()) {
-        document.getElementById('submitwarning').className = "mx-auto text-center mt-2";
         return;
     }
+
+    document.getElementById('submitwarning').innerText = "";
 
     graphicSubmit();
 

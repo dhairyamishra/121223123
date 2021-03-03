@@ -35,10 +35,57 @@ function search() {
     }
 }
 
+function canSubmit(id) {
+
+    var good = true;
+    var title_test = new RegExp(/^[a-zA-Z\-\s]*$/);
+    var author_test = new RegExp(/^[a-zA-Z\-\s]*$/);
+    var isbn_test = new RegExp(/^[0-9]{10,13}$/);
+    var numCopies_test = new RegExp(/^\d+$/);
+    
+    
+    var title = document.getElementById(`newtitle-${id}`).value;
+    var author = document.getElementById(`newauthor-${id}`).value;
+    var isbn = document.getElementById(`newisbn-${id}`).value;
+    var numCopies = document.getElementById(`newnumcopies-${id}`).value;
+    
+    if(!title_test.test(title) || title == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid title";
+        
+        good = false;
+    }
+    if(!author_test.test(author) || author == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid author name";
+
+        good = false;
+    }
+    if(!isbn_test.test(isbn) || isbn == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid isbn (10 to 13 digit number)";
+
+        good = false;
+    }
+    if(!numCopies_test.test(numCopies) || numCopies == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid number of copies";
+
+        good = false;
+    }
+    
+    return good;
+}
+
+
 function editDetails(id) {
+    if (!canSubmit(id)) {
+        return;
+    }
+    
+    document.getElementById(`submitwarning-${id}`).innerText = "";
 
     document.getElementById(`submitDetails-${id}`).disabled = true;
     document.getElementById(`submitDetails-${id}`).innerText = 'Working';
+
+    
+    
 
     $.ajax({
         global: false,

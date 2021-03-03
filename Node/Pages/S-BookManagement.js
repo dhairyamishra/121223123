@@ -327,8 +327,10 @@ function genResultHTML(booklist) {
                     <input type="text" class="form-control mb-2" id="newisbn-${book._id}" placeholder="ISBN" aria-label="ISBN" aria-describedby="basic-addon2" value="${book.info.isbn}"data-toggle="tooltip" data-placement="top" title="Enter new isbn here">
                     <h6 class="pt-2 text-dark text-centered">Edit books number of copies</h6>
                     <input type="text" class="form-control mb-2" id="newnumcopies-${book._id}" placeholder="Number of Copies" aria-label="Number of Copies" aria-describedby="basic-addon2" value="${book.info.copies}"data-toggle="tooltip" data-placement="top" title="Enter new number of copies here">
-                
-                    <button class=" btn w-auto mb-2 mx-auto btn-md btn-primary btn-block" id="submitDetails-${book._id}" data-dismiss="modal" data-toggle="tooltip" data-placement="top" title="Click to edit book's details" onclick="editDetails('${book._id}')">Submit</button>
+                    <div class="mx-auto text-center mt-2">
+                        <h6 class="text-danger" id="submitwarning-${book._id}"></h6>
+                    </div>
+                    <button class=" btn w-auto mb-2 mx-auto btn-md btn-primary btn-block" id="submitDetails-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to edit book's details" onclick="editDetails('${book._id}')">Submit</button>
                 </div>
                 </div>
                 <div class="modal-footer">

@@ -133,14 +133,16 @@ function Template() {
                             <h5 class="pt-2 pb-2 text-center text-secondary">Short-term only?</h5>
                             <input type="checkbox" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" id="shortterm" data-toggle="tooltip" data-placement="top" title="Click if book is only for short term loans">
 
+                            <div class="d-none" id="submitwarning">
+                                <h4 class="text-danger">Make sure all fields are filled out.</h4>
+                            </div>
+                            
                             <div class="mx-auto text-center bg-dark mt-4 w-50 rounded">
                                 <button class="btn btn-lg btn-primary w-100" type="button" onclick="createBook();" data-toggle="tooltip" data-placement="top" title="Click to add this book">
                                     Create book
                                 </button>
                             </div>
-                            <div class="d-none" id="submitwarning">
-                                <h4 class="text-danger">Make sure all fields are filled out.</h4>
-                            </div>
+                            
 
                         </div>
                     </div>
