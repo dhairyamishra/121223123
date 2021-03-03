@@ -5,8 +5,8 @@ function canSubmit() {
     var good = true;
     var title_test = new RegExp('^[a-zA-Z]*$');
     var author_test = new RegExp('^[a-zA-Z]*$');
-    var isbn_test = new RegExp('^97[0-9]{10-13}$');
-    var numCopies_test = new RegExp('[0-9]');
+    var isbn_test = new RegExp('^98+[0-9]{10,13}$');
+    var numCopies_test = new RegExp('^\d+$');
     
     var title = document.getElementById('title').value;
     var author = document.getElementById('author').value;

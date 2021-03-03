@@ -35,6 +35,41 @@ function search() {
     }
 }
 
+function canSubmit() {
+
+    
+    var name_test = RegExp('^[a-zA-Z\s]*$');
+    var ucard_test = RegExp('^[a-z]+ -{0,10}+$');
+    var address_test = RegExp('^^[\w\s\-\\]*$');
+    var phone_test = RegExp('^[0-9]{10}$');
+    var email_test = RegExp('^\w+@\w+.\w{2,4}$');
+    
+    
+
+    if (document.getElementById(`newname-${id}`).value == '' || 
+        !name_test.test(document.getElementById('newname-${id}').value)) {
+        good = false;
+    }
+    if (document.getElementById('newucard-${id}').value == '' || 
+        !ucard_test.test(document.getElementById('newucard-${id}').value)) {
+        good = false;
+    }
+    if (document.getElementById('newaddress-${id}').value == '' || 
+        !address_test.test(document.getElementById('newaddress-${id}').value)) {
+        good = false;
+    }
+    if (document.getElementById('newphone-${id}').value == '' || 
+        !phone_test.test(document.getElementById('newphone-${id}').value)) {
+        good = false;
+    }
+    if (document.getElementById('newemail-${id}').value == '' || 
+        !email_test.test(document.getElementById('newemail-${id}').value)) {
+        good = false;
+    }
+    
+    return good;
+}
+
 function editDetails(id) {
 
     document.getElementById(`submitDetails-${id}`).disabled = true;
@@ -47,7 +82,17 @@ function editDetails(id) {
     var publicKey = Uint8Array.from(publicKeyText.split`,`.map(x=>parseInt(x)));
 
     // id,name,ucard,address,phone,email
-    var data = `${id},${document.getElementById(`newname-${id}`).value},${document.getElementById(`newucard-${id}`).value},${document.getElementById(`newaddress-${id}`).value},${document.getElementById(`newphone-${id}`).value},${document.getElementById(`newemail-${id}`).value}`;
+    if(!canSubmit())
+    {
+        document.getElementById('submitwarning').className = "mx-auto-centre mt-2"
+        return;
+    }
+    var data = `${id},${document.getElementById(`newname-${id}`).value},
+                        ${document.getElementById(`newucard-${id}`).value},
+                        ${document.getElementById(`newaddress-${id}`).value},
+                        ${document.getElementById(`newphone-${id}`).value},
+                        ${document.getElementById(`newemail-${id}`).value}`
+                        ;
     
     var message = encode(data,publicKey);
 
@@ -81,7 +126,9 @@ function editDetails(id) {
 
 function editPassword(username,id) {
 
-    if (document.getElementById(`newpassword-${id}`).value == '') {
+    var password_test = RegExp('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$');
+    if (document.getElementById(`newpassword-${id}`).value == '' || 
+        !password_test.test(document.getElementById(`newpassword-${id}`).value )) {
         // potentially warn user that nothing happend
         return;
     }
