@@ -89,7 +89,7 @@ function createUser() {
             if (result == '/login') {
                 window.location.replace(result);
             }
-            else if (result == '/manage') {
+            else if (result == '/usermanagement') {
                 window.location.replace(result);
             }
             else {

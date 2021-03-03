@@ -89,8 +89,12 @@ router.post('/borrowBook',function(req,res,next) {
                     res.send('usererror');
                     res.end();
                 }
-                else  if (success=='bookerror'){
+                else if (success=='bookerror'){
                     res.send('bookerror');
+                    res.end();
+                }
+                else if (success=='lateerror'){
+                    res.send('lateerror');
                     res.end();
                 }
                 else {
@@ -274,7 +278,7 @@ function borrowBook(bookId, userId, type, callback) {
     validateUser(userId, bookId, function(err, validUser, isReserved) {
         if (err) return callback(err, undefined);
 
-        if (validUser) {
+        if (validUser=='true') {
 
             if(isReserved) {
                 // borrow reserved book
@@ -373,6 +377,9 @@ function borrowBook(bookId, userId, type, callback) {
          
             
         }
+        else if (validUser == 'late') {
+            return callback(undefined,'lateerror');
+        }
         else {
             return callback(undefined, 'usererror');
         }
@@ -413,30 +420,29 @@ function validateUser(userId, bookId, callback) {
     
                 if (res[0].level == 1) {
                     if (res[0].booklist.length < 6) {
-                        return callback(undefined, true, isReserved);
+                        return callback(undefined, 'true', isReserved);
                     }
                     else {
-                        return callback(undefined, false, isReserved);
+                        return callback(undefined, 'false', isReserved);
                     }
                 }
                 else if(res[0].level == '2' || res[0].level == '3') {
                     if (res[0].booklist.length < 12) {
-                        return callback(undefined, true, isReserved);
+                        return callback(undefined, 'true', isReserved);
                     }
                     else {
-                        return callback(undefined, false, isReserved);
+                        return callback(undefined, 'false', isReserved);
                     }
                 }
                 else {
-                    return callback(undefined, false, isReserved);
+                    return callback(undefined, 'false', isReserved);
                 }
     
     
             });
         }
         else {
-            log.info(`more than 5 late books in the last month`);
-            return callback(undefined, false, false);
+            return callback(undefined, 'late', false);
         }
 
         

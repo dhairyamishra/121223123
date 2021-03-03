@@ -39,10 +39,13 @@ function borrowBook() {
                 window.location.replace('/borrow');
             }
             else if (result == 'usererror') {
-                document.getElementById('submitwarning').innerText = "That user cannot borrow any more books";
+                document.getElementById('submitwarning').innerText = "That user cannot borrow/reserve any more books";
             }
             else if (result == 'bookerror') {
                 document.getElementById('submitwarning').innerText = "That book has no more copies to borrow";
+            }
+            else if (result == 'lateerror') {
+                document.getElementById('submitwarning').innerText = "This user has had too many late returns recently";
             }
             else {
                 // usernameTaken();
