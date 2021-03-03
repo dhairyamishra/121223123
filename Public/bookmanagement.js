@@ -35,11 +35,11 @@ function search() {
     }
 }
 
-function canSubmit() {
+function canSubmit(id) {
 
     var good = true;
-    var title_test = new RegExp(/^[\w\-\s]*$/);
-    var author_test = new RegExp(/^[\w\-\s]*$/);
+    var title_test = new RegExp(/^[a-zA-Z\-\s]*$/);
+    var author_test = new RegExp(/^[a-zA-Z\-\s]*$/);
     var isbn_test = new RegExp(/^[0-9]{10,13}$/);
     var numCopies_test = new RegExp(/^\d+$/);
     
@@ -49,28 +49,42 @@ function canSubmit() {
     var isbn = document.getElementById(`newisbn-${id}`).value;
     var numCopies = document.getElementById(`newnumcopies-${id}`).value;
     
-    if(!title_test.test(title) || title == "")
+    if(!title_test.test(title) || title == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid title";
+        
         good = false;
-    if(!author_test.test(author) || author == "")
+    }
+    if(!author_test.test(author) || author == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid author name";
+
         good = false;
-    if(!isbn_test.test(isbn) || isbn == "")
+    }
+    if(!isbn_test.test(isbn) || isbn == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid isbn (10 to 13 digit number)";
+
         good = false;
-    if(!numCopies_test.test(numCompies) || numCopies == "")
+    }
+    if(!numCopies_test.test(numCopies) || numCopies == "") {
+        document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid number of copies";
+
         good = false;
+    }
     
     return good;
 }
 
 
 function editDetails(id) {
+    if (!canSubmit(id)) {
+        return;
+    }
+    
+    document.getElementById(`submitwarning-${id}`).innerText = "";
 
     document.getElementById(`submitDetails-${id}`).disabled = true;
     document.getElementById(`submitDetails-${id}`).innerText = 'Working';
 
-    if (!canSubmit()) {
-        document.getElementById('submitwarning').className = "mx-auto text-center mt-2";
-        return;
-    }
+    
     
 
     $.ajax({

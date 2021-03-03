@@ -174,8 +174,8 @@ function Template(publicKey) {
                                     Create user
                                 </button>
                             </div>
-                            <div class="d-none" id="submitwarning">
-                                <h4 class="text-danger">Make sure all fields are filled out.</h4>
+                            <div class="mx-auto text-center mt-2">
+                            <h4 class="text-danger" id="submitwarning"></h4>
                             </div>
 
                         </div>

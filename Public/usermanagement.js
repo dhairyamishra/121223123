@@ -43,26 +43,30 @@ function canSubmit(id) {
     var phone_test = RegExp(/^[0-9]{10}$/);
     var email_test = RegExp(/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
     
-    
 
     if (document.getElementById(`newname-${id}`).value == '' || 
         !name_test.test(document.getElementById(`newname-${id}`).value)) {
+            document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid name";
         return false;
     }
     else if (document.getElementById(`newucard-${id}`).value == '' || 
         !ucard_test.test(document.getElementById(`newucard-${id}`).value)) {
+            document.getElementById(`submitwarning-${id}`).innerText = "Please enter valid U-card";
         return false;
     }
     else if (document.getElementById(`newaddress-${id}`).value == '' || 
         !address_test.test(document.getElementById(`newaddress-${id}`).value)) {
+            document.getElementById(`submitwarning-${id}`).innerText = "Please enter valid address";
         return false;
     }
     else if (document.getElementById(`newphone-${id}`).value == '' || 
         !phone_test.test(document.getElementById(`newphone-${id}`).value)) {
+            document.getElementById(`submitwarning-${id}`).innerText = "Please enter a valid phone number";
         return false;
     }
     else if (document.getElementById(`newemail-${id}`).value == '' || 
         !email_test.test(document.getElementById(`newemail-${id}`).value)) {
+            document.getElementById(`submitwarning-${id}`).innerText = "Please enter valid email";
         return false;
     }
     else {
@@ -77,6 +81,8 @@ function editDetails(id) {
         // document.getElementById('submitwarning').className = "mx-auto-centre mt-2"
         return;
     }
+
+    document.getElementById(`submitwarning-${id}`).innerText = "";
 
     document.getElementById(`submitDetails-${id}`).disabled = true;
     document.getElementById(`submitDetails-${id}`).innerText = 'Working';
