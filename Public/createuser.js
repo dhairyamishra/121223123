@@ -4,11 +4,11 @@ function canSubmit() {
 
     
     var good = true;
-    var name_test = RegExp('^[a-zA-Z\s]*$');
-    var ucard_test = RegExp('^[a-z]+ -{0,10}+$');
-    var address_test = RegExp('^^[\w\s\-\\]*$');
-    var phone_test = RegExp('^[0-9]{10}$');
-    var email_test = RegExp('^\w+@\w+.\w{2,4}$');
+    var name_test = RegExp(/^[a-zA-Z\s]*$/);
+    var ucard_test = RegExp(/^[UAM]-[0-9]{1,10}$/);
+    var address_test = RegExp(/^[\w\s\-\.]*$/);
+    var phone_test = RegExp(/^[0-9]{10}$/);
+    var email_test = RegExp(/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
     
     if (document.getElementById('usertype').value == 'none') {
         good = false;
