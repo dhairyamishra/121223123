@@ -1,1 +1,1 @@
-mongodb+srv://kimmel0424:oDJMFlQ6kxTIUtRI@cluster0.obqyq.mongodb.net/ordos?retryWrites=true&w=majority
+mongodb+srv://<kimmel0424>:<oDJMFlQ6kxTIUtRI>@cluster0.obqyq.mongodb.net/ordos?retryWrites=true&w=majority
