@@ -105,7 +105,7 @@ function Template() {
     var body = `
     <nav class="navbar navbar-dark bg-primary">
         <a class="navbar-brand" href="/manager" data-toggle="tooltip" data-placement="top" title="Home">Home</a>
-        <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Creation">Create Book</a>
+        <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Addition">Add Book</a>
         <a class="navbar-brand" href="/bookmanagement" data-toggle="tooltip" data-placement="top" title="Book Maintenance">Maintain Books</a>
         <a class="navbar-brand" href="/login" onclick="logout()" data-toggle="tooltip" data-placement="top" title="Log out of system">Log out</a>
     </nav>

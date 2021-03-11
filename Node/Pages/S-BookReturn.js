@@ -187,14 +187,14 @@ function Template() {
     <div class="mt-2 text-center">
         <h3 class="pt-2 pb-2 text-center text-dark">Book Return</h3>
         <h5 class="pt-2 pb-2 text-center text-secondary">Search for a book</h5>
-        <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" data-bookId="" data-toggle="tooltip" data-placement="top" title="Enter a search" placeholder="Title" id="searchBook">
+        <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" data-bookId="" data-toggle="tooltip" data-placement="top" title="Enter a search" placeholder="Title" id="searchBook">
 
         <div class="btn-group-vertical w-75 mx-auto text-center" role="group" aria-label="Books" id="bookSearchResults">
         </div>
 
         <br>
         <h5 class="pt-2 pb-2 text-center text-secondary">Search for a user</h5>
-        <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" placeholder="Name" id="searchUser" data-userId="" data-toggle="tooltip" data-placement="top" title="Enter a search">
+        <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" placeholder="Name" id="searchUser" data-userId="" data-toggle="tooltip" data-placement="top" title="Enter a search">
 
         <div class="btn-group-vertical w-75 mx-auto text-center" role="group" aria-label="Users" id="userSearchResults">
         </div>
@@ -438,7 +438,7 @@ function genUserSearchHTML(userlist) {
         var ucard = userlist[i].info.ucard;
 
         html += `<div class="btn-group text-center" id="user-${id}" role="group">
-                    <button type="button" class="btn btn-dark" id="${id}"  onclick="userSelect('${id}','${name}','${ucard}')">${name} (U-card: ${ucard})</button>
+                    <button type="button" class="btn btn-secondary" id="${id}"  onclick="userSelect('${id}','${name}','${ucard}')">${name} (U-card: ${ucard})</button>
                 </div>
         `;
     }
@@ -478,7 +478,7 @@ function genBookSearchHTML(booklist) {
         var isbn = booklist[i].info.isbn;
 
         html += `<div class="btn-group text-center" id="book-${id}" role="group">
-                    <button type="button" class="btn btn-dark" id="${id}"  onclick="bookSelect('${id}','${title}','${isbn}')">${title} (ISBN: ${isbn})</button>
+                    <button type="button" class="btn btn-secondary" id="${id}"  onclick="bookSelect('${id}','${title}','${isbn}')">${title} (ISBN: ${isbn})</button>
                 </div>
         `;
     }

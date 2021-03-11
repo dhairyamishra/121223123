@@ -104,7 +104,7 @@ function getPage(callback) {
 function Template() {
     var body = `<nav class="navbar navbar-dark bg-primary">
                     <a class="navbar-brand" href="/manager" data-toggle="tooltip" data-placement="top" title="Home">Home</a>
-                    <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Creation">Create Book</a>
+                    <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Addition">Add Book</a>
                     <a class="navbar-brand" href="/bookmanagement" data-toggle="tooltip" data-placement="top" title="Book Maintenance">Maintain Books</a>
                 </nav>
 
@@ -115,23 +115,23 @@ function Template() {
                             <br>
                             
                             <h5 class="pt-2 pb-2 text-center text-secondary">Book Title</h5>
-                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" data-toggle="tooltip" data-placement="top" title="Enter the book's title" placeholder="Title" id="title">
+                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" data-toggle="tooltip" data-placement="top" title="Enter the book's title" placeholder="Title" id="title">
 
                             <br>
                             <h5 class="pt-2 pb-2 text-center text-secondary">Book Author</h5>
-                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" placeholder="Author" id="author" data-toggle="tooltip" data-placement="top" title="Enter the book's author">
+                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" placeholder="Author" id="author" data-toggle="tooltip" data-placement="top" title="Enter the book's author">
 
                             <br>
                             <h5 class="pt-2 pb-2 text-center text-secondary">Book ISBN</h5>
-                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" placeholder="ISBN" id="isbn" data-toggle="tooltip" data-placement="top" title="Enter the book's ISBN">
+                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" placeholder="ISBN" id="isbn" data-toggle="tooltip" data-placement="top" title="Enter the book's ISBN">
 
                             <br>
                             <h5 class="pt-2 pb-2 text-center text-secondary">Number of copies</h5>
-                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" placeholder="Number of copies" id="numCopies" data-toggle="tooltip" data-placement="top" title="Enter the number of copies of the book">
+                            <input type="text" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" placeholder="Number of copies" id="numCopies" data-toggle="tooltip" data-placement="top" title="Enter the number of copies of the book">
 
                             <br>
-                            <h5 class="pt-2 pb-2 text-center text-secondary">Short-term only?</h5>
-                            <input type="checkbox" class="form-control mt-2 mb-2 w-75 mx-auto bg-dark text-light" id="shortterm" data-toggle="tooltip" data-placement="top" title="Click if book is only for short term loans">
+                            <h5 class="pt-2 pb-2 text-center text-secondary">Short-term borrowing only?</h5>
+                            <input type="checkbox" class="form-control mt-2 mb-2 w-75 mx-auto bg-light text-dark" id="shortterm" data-toggle="tooltip" data-placement="top" title="Click if book is only for short term loans">
 
                             <div class="d-none" id="submitwarning">
                                 <h4 class="text-danger">Make sure all fields are filled out.</h4>
@@ -139,7 +139,7 @@ function Template() {
                             
                             <div class="mx-auto text-center bg-dark mt-4 w-50 rounded">
                                 <button class="btn btn-lg btn-primary w-100" type="button" onclick="createBook();" data-toggle="tooltip" data-placement="top" title="Click to add this book">
-                                    Create book
+                                    Add book
                                 </button>
                             </div>
                             

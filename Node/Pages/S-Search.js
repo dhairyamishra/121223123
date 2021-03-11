@@ -72,7 +72,7 @@ function Template() {
                 <div class="container" id="main">
                     <div class="row">
                         <div class="col-lg">
-                            <h3 class="text-center">Book Search</h3>
+                            <h3 class="pt-2 text-center">Book Search</h3>
                             <br>
                             <div class="bg-primary text-light pt-2 px-2">
                                 <div class="container">
@@ -210,7 +210,7 @@ function genResultHTML(booklist) {
             </div>
                 
                 
-            <div class="bg-dark text-center rounded mb-2 p-1" id="book-${book._id}" name="book">
+            <div class="bg-dark text-center rounded mb-2 p-2 pt-3" id="book-${book._id}" name="book">
 
                 <h5 class="text-center text-light">${book.info.title}</h5>
                 <button type="button" class="btn w-75 mb-2 mx-auto px-auto btn-lg btn-light rounded" data-toggle="modal" data-target="#DetailsModal-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to view book's details">Details</button>

@@ -197,7 +197,7 @@ function genHTML(booklist) {
                 </div>
                     
                     
-                <div class="bg-dark text-center rounded mb-2 p-1" id="book-${book._id}" name="book">
+                <div class="bg-dark text-center rounded mb-2 p-2 pt-3" id="book-${book._id}" name="book">
 
                     <h5 class="text-center text-light">${book.info.title}</h5>
                     <button type="button" class="btn w-75 mb-2 mx-auto px-auto btn-lg btn-light rounded" data-toggle="modal" data-target="#DetailsModal-${book._id}" data-toggle="tooltip" data-placement="top" title="Click to view book's details">Details</button>
