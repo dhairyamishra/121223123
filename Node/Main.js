@@ -76,7 +76,7 @@ app.use('/error', PageError);
 
 // redirect from base page to /landing page
 app.get('/', function(req,res) {
-    res.redirect('/landing');
+    res.redirect('/browse');
 });
 
 app.get('*', function(req,res) {
