@@ -43,6 +43,7 @@ app.use(function(req,res,next) {
 // import pages
 var Landing = require('./Pages/S-Landing');
 var Login = require('./Pages/S-Login');
+var ResetPassword = require('./Pages/S-ResetPassword');
 var Manager = require('./Pages/S-LibraryManager');
 var CreateBook = require('./Pages/S-CreateBook');
 var CreateUser = require('./Pages/S-CreateUser');
@@ -60,6 +61,7 @@ var PageError = require('./Pages/S-Error');
 
 app.use('/landing', Landing);
 app.use('/login', Login);
+app.use('/reset', ResetPassword);
 app.use('/manager', Manager);
 app.use('/createbook', CreateBook);
 app.use('/createuser', CreateUser);
