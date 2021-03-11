@@ -9,7 +9,7 @@ function search() {
     
             //The data to send to the server
             data: {
-                searchString: document.getElementById('searchBox').value,
+                searchString: DOMPurify.sanitize(document.getElementById('searchBox').value),
                 searchType: document.getElementById('searchBy').value,
                 sortType: document.getElementById('sortBy').value
             },

@@ -140,6 +140,7 @@ function addHead(body,jsFile) {
             <!-- Bootstrap CSS -->
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+            <script type="text/javascript" src="purify.min.js"></script>
             <!--<link rel="stylesheet" href="css/bootstrap.min.css"> -->
             <!--<link rel="stylesheet" href="style.css"> -->
             ${jsFile}
