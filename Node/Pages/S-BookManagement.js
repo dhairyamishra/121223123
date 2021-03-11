@@ -169,7 +169,7 @@ function getPage(callback) {
 function Template(publicKey) {
     var body = `<nav class="navbar navbar-dark bg-primary">
                     <a class="navbar-brand" href="/manager" data-toggle="tooltip" data-placement="top" title="Home">Home</a>
-                    <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Creation">Create Book</a>
+                    <a class="navbar-brand" href="/createbook" data-toggle="tooltip" data-placement="top" title="Book Addition">Add Book</a>
                 </nav>
 
                 <div class="container" id="main" data-publicKey="${publicKey}">

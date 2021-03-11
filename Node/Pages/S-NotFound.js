@@ -42,7 +42,7 @@ function getPage(callback) {
 // function that is specific to each page
 function Template() {
     var body = `
-    <nav class="navbar navbar-primary bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand">Library</a>
         </nav>
         <div class="mt-3">

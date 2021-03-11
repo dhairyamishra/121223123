@@ -133,19 +133,19 @@ function Template(publicKey) {
                             <br>
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">Name</h5>
-                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="Name" id="name" data-toggle="tooltip" data-placement="top" title="Enter the new user's name">
+                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Name" id="name" data-toggle="tooltip" data-placement="top" title="Enter the new user's name">
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">U-card</h5>
-                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="U-card" id="ucard" data-toggle="tooltip" data-placement="top" title="Enter the new user's U-card number">
+                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="U-card" id="ucard" data-toggle="tooltip" data-placement="top" title="Enter the new user's U-card number">
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">Address</h5>
-                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="Address" id="address" data-toggle="tooltip" data-placement="top" title="Enter the new user's addressr">
+                            <input type="text" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Address" id="address" data-toggle="tooltip" data-placement="top" title="Enter the new user's addressr">
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">Telephone</h5>
-                            <input type="tel" class="form-control mb-2 w-75 mx-auto bg-dark text-light" pattern="[0-9]{10}" id="phone" data-toggle="tooltip" data-placement="top" title="Enter the new user's telephone number">
+                            <input type="tel" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Phone number (ex. 1234567890)" pattern="[0-9]{10}" id="phone" data-toggle="tooltip" data-placement="top" title="Enter the new user's telephone number">
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">Email</h5>
-                            <input type="email" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="Email" id="email" data-toggle="tooltip" data-placement="top" title="Enter the new user's email">
+                            <input type="email" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Email" id="email" data-toggle="tooltip" data-placement="top" title="Enter the new user's email">
 
                             <h5 class="pt-2 pb-2 text-center text-secondary">User type</h5>
                             <div class="text-center">
@@ -159,13 +159,13 @@ function Template(publicKey) {
                             
                             <div class="collapse p-2 w-75 text-center mx-auto rounded" id="authentication">
                                 <h5 class="pt-2 pb-2 text-center text-secondary">Username</h5>
-                                <input type="text" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="Username" id="username" data-toggle="tooltip" data-placement="top" title="Enter a unique username">
+                                <input type="text" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Username" id="username" data-toggle="tooltip" data-placement="top" title="Enter a unique username">
                                 <div class="d-none" id="usernameValid">
                                     <h4 class="text-danger">That username is taken</h4>
                                 </div> 
 
                                 <h5 class="pt-2 pb-2 text-center text-secondary">Password</h5>
-                                <input type="password" class="form-control mb-2 w-75 mx-auto bg-dark text-light" placeholder="Password" id="password" data-toggle="tooltip" data-placement="top" title="Enter a password for the user">
+                                <input type="password" class="form-control mb-2 w-75 mx-auto bg-light text-dark" placeholder="Password" id="password" data-toggle="tooltip" data-placement="top" title="Enter a password for the user">
                             </div>
 
                             

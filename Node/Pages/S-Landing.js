@@ -46,7 +46,7 @@ function getPage(callback) {
 // function that is specific to each page
 function Template() {
     var body = `
-    <nav class="navbar navbar-primary bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand">Library</a>
         </nav>
         <div class="mt-2">
@@ -54,8 +54,6 @@ function Template() {
         </div>
         <br>
         <div class="">
-            <h4 class="text-center"> This is a placeholder</h4>
-            <br>
             <h4 class="text-center">Browse for a book</h4>
         </div>  
     `;
